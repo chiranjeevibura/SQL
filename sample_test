@@ -1,0 +1,21 @@
+SELECT
+    card_code_desc AS card_category,
+    types.card_type,
+    COUNT(*) AS total_cards,
+    SUM(CASE WHEN LENGTH(account_number) = (CASE types.card_type WHEN 'Amex' THEN 15 ELSE 16 END) THEN 1 ELSE 0 END) AS specific_length_cards,
+    SUM(CASE WHEN LENGTH(account_number) != (CASE types.card_type WHEN 'Amex' THEN 15 ELSE 16 END) THEN 1 ELSE 0 END) AS not_specific_length_cards
+FROM
+    (SELECT 'Amex' AS card_type UNION ALL SELECT 'Visa' UNION ALL SELECT 'Master') types
+CROSS JOIN
+    (SELECT DISTINCT card_code_desc FROM your_table) categories
+LEFT JOIN
+    your_table ON card_code_desc = categories.card_code_desc
+             AND SUBSTR(account_number, 1, 1) =
+    CASE types.card_type
+        WHEN 'Amex' THEN '3'
+        WHEN 'Visa' THEN '4'
+        WHEN 'Master' THEN '5'
+    END
+GROUP BY
+    card_code_desc,
+    types.card_type;
