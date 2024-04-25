@@ -19,3 +19,23 @@ LEFT JOIN
 GROUP BY
     card_code_desc,
     types.card_type;
+
+______
+
+SELECT
+    'consumer' AS card_category,
+    CASE SUBSTR(account_number, 1, 1)
+        WHEN '3' THEN 'Amex'
+        WHEN '4' THEN 'Visa'
+        WHEN '5' THEN 'Master'
+        ELSE 'Unknown'
+    END AS card_type,
+    COUNT(*) AS total_cards,
+    SUM(CASE WHEN LENGTH(account_number) = 15 THEN 1 ELSE 0 END) AS specific_length_cards,
+    SUM(CASE WHEN LENGTH(account_number) != 15 THEN 1 ELSE 0 END) AS not_specific_length_cards
+FROM
+    card_source
+WHERE
+    card_code_desc = 'consumer'
+GROUP BY
+    SUBSTR(account_number, 1, 1);
