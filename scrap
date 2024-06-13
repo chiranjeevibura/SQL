@@ -1,0 +1,47 @@
+   sql_main_query = """
+    SELECT 
+    substr(d.object_id, 7, 2) || substr(d.object_id, 5, 2) || substr(d.object_id, 3, 2) || substr(d.object_id, 1, 2) ||
+    substr(d.object_id, 11, 2) || substr(d.object_id, 9, 2) || substr(d.object_id, 17, 4) || substr(d.object_id, 21, 12) AS "P8Guid",
+    substr(d.object_id, 0, 32) AS object_id, 
+    d.u6048_domain as "domain",
+    d.uab78_division as "division",
+    d.Ufa18_subdivision as "subdivision",
+    d.u3dd8_security_proxy_name as "securityGroup",
+    d.content_referral_blob as "hop_blob_data",
+    d.u6b28_doc_tuple_id as "tupleid",
+    t.DOCUMENTCATCD as "documentCatCd",
+    t.DOCUMENTCATDESC as "documentCatDesc",
+    t.DOCUMENTTYPECD as "documentTypeCd",
+    d.u0eb8_doc_state as "documentStateList",
+    d.uf668_doc_status as "documentStatus",
+    d.version_series_id as "initialVersionId",
+    d.U1708_documenttitle as "documentTitle"
+    FROM docversion d
+    JOIN classdefinition cd ON cd.OBJECT_ID = d.OBJECT_CLASS_ID
+    JOIN Tuple t ON t.TUPLEID = d.u6b28_doc_tuple_id
+    WHERE cd.SYMBOLIC_NAME = ' '
+    AND d.U6048_domain = ' '
+    AND d.uab78_division = ' '
+    """
+
+    sql_ext_ref_query = """
+    SELECT
+    d.OBJECT_ID as object_id,
+    ge.U14A8_DOMAIN as ext_ref_domain,
+    ge.U1208_EXT_REF_NUMBER as externalReferencekeys_value,
+    ge.U6FD8_EXT_REF_TYPE as externalReferencekeys_name
+    FROM docversion d
+    LEFT JOIN u_ext_ref_uid ueru ON d.OBJECT_ID = ueru.PARENT_ID
+    LEFT JOIN GENERIC ge ON ueru.element_value = ge.OBJECT_ID
+    """
+
+    sql_cust_ref_query = """
+    SELECT
+    d.OBJECT_ID as object_id,
+    gc.ub1b8_domain as CustomerDomain,
+    gc.uc408_type as customerReferencekeys_name,
+    gc.ubd28_value as customerReferenceKeys_value
+    FROM docversion d
+    LEFT JOIN u_customer_ref_uid ucru ON d.OBJECT_ID = ucru.PARENT_ID
+    LEFT JOIN GENERIC gc ON ucru.element_value = gc.OBJECT_ID
+    """
