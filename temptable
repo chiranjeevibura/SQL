@@ -1,0 +1,12 @@
+CREATE TABLE SparkReconBatchTable (
+    BATCHID VARCHAR2(36) NOT NULL, -- UUID for batch identification
+    FROM_DATE TIMESTAMP NOT NULL,  -- Start date of the batch
+    TO_DATE TIMESTAMP NOT NULL,    -- End date of the batch
+    MIGRATED_DTTM TIMESTAMP,       -- Timestamp when the batch was migrated
+    RECONCILE_DTTM TIMESTAMP,      -- Timestamp for the reconciliation process
+    RECONCILE_SRC_CNT NUMBER,      -- Source count for reconciliation
+    RECONCILE_TGT_CNT NUMBER,      -- Target count for reconciliation
+    RECONCILE_CHECK VARCHAR2(255), -- Status or result of reconciliation check
+    RETRIEVAL_VALIDATION VARCHAR2(255), -- Status or result of retrieval validation
+    PRIMARY KEY (BATCHID)          -- Primary key constraint
+);
