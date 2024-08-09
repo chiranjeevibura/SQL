@@ -10,3 +10,27 @@ CREATE TABLE SparkReconBatchTable (
     RETRIEVAL_VALIDATION VARCHAR2(255), -- Status or result of retrieval validation
     PRIMARY KEY (BATCHID)          -- Primary key constraint
 );
+
+
+
+INSERT INTO SparkReconBatchTable (
+    BATCHID, 
+    BATCH_START_DATE, 
+    BATCH_END_DATE, 
+    MIGRATED_DTTM, 
+    RECONCILE_DTTM, 
+    RECONCILE_SRC_CNT, 
+    RECONCILE_TGT_CNT, 
+    RECONCILE_CHECK, 
+    RETRIEVAL_VALIDATION
+) VALUES (
+    '123e4567-e89b-12d3-a456-426614174000', -- Sample UUID
+    TIMESTAMP '2024-08-08 10:00:00',       -- Sample Start Date
+    TIMESTAMP '2024-08-08 18:00:00',       -- Sample End Date
+    TIMESTAMP '2024-08-08 19:00:00',       -- Sample Migration Timestamp
+    TIMESTAMP '2024-08-08 20:00:00',       -- Sample Reconciliation Timestamp
+    100,                                   -- Sample Source Count
+    95,                                    -- Sample Target Count
+    'Pending',                             -- Sample Reconciliation Check
+    'Validated'                            -- Sample Retrieval Validation
+);
